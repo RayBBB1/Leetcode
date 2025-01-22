@@ -1,0 +1,47 @@
+**Repeat**
+- input:
+	- nums: int arr
+	- n: size of nums
+	- k: subarray length
+- output:
+	- maximum avg value of contiguous subarray whose length is equal to k
+
+**Example**
+nums = [1,12,-5,-6,50,3], k = 4
+[12,-5,-6,50] is the objective subarray and avg value is 12.75
+
+**Approach**
+- maintain a window with start and end pointer
+- Sliding the window toward nums one position at a time
+- calculate the avg value for every window 
+	- approach: acmulate all element--> slow
+		- Time: O(kn)
+	- optimized approch: maintain the sum of the current window. To slide the window, substract the element leaving the window from the left and add the element entering the window frome the right.
+		- Time: O(n)
+		- Space: O(1)
+
+**Coding**
+```c++
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+        //set start of window pointer,the end is equal to l+k-1
+        int l = 0;
+        double window_sum = 0;
+        double max_value;
+        //initialize window_sum value with the sum of the first k element
+        for(int i = 0 ; i < k;i++){
+            window_sum += nums[i];
+        }
+        max_value = window_sum;
+  
+        
+        for(++l;l+k-1 < nums.size();l++){
+            window_sum = window_sum-nums[l-1]+nums[l+k-1];
+            max_value = max(max_value,window_sum);    
+        }      
+        return max_value /k; 
+    }
+};
+
+```
